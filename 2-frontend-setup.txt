@@ -1,0 +1,29 @@
+1. We will create static files. These are the files that will go to our users. In the `src` folder, we create public folder
+and its heirarchy.
+--> src
+    --> public
+        --> js
+            -->app.js
+
+2. In the `server.js` file, configure pug by setting the view engine and set the path
+    app.set('view engine','pug');
+3. Create a `views` folder in the `src` folder and the `home.pug`
+    --> src
+        --> views
+            --> home.pug
+
+    app.set('views', __dirname+'/views');
+4. Create the '/' endpoint.
+5. Add the script to `home.pug`
+    script(src="/public/js/app.js")
+   This url doesn't work yet- `http://localhost/3000/public/js/app.js`. For this we use midlleware express.static()
+   app.use('/public', express.static(__dirname+'/public'))
+
+   Improvement: If we make any changes to views, then nodemon restarts and we don't want that. We want nodemon to restart only
+   if we modify the server.
+   So we go in `nodemon.json` and ignore "/src/public/*"
+
+Important 6. To make UI look good without doing much CSS, use mvp.css. Go mvp.css and copy the CSS link. This link adds the
+default CSS. Add the link to header section of `home.pug`
+
+Run the project using `npm run dev` command.
