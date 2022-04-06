@@ -1,0 +1,21 @@
+Check ws on npm website.
+1. ws is simple to use WebSocket client and server implementation. Protocol means some people meet in room and decide how things need to be done.
+Developers take these rules and implement them.
+
+2. There are WebSocket implementations for various languages Java, Go, C# etc.
+
+3. Chatrooms that we are going to implement are not available in ws. A group of developers have built a framework that uses ws. It has features like
+chatrooms that we don't have to implement on our own.
+
+4. Install ws and we are going to create ws server. We are going to take the express server and put it together with ws server. express is handling HTTP
+request and responses and ws handles ws things.
+    npm i ws
+
+5. We use `http` module to create server and pass our application as the request listener to it. Next we create ws server on top of this server.
+    const server = http.createServer(app);
+    const wss= new webSocket.Server({server});
+
+    Note: If we don't want the HTTP server we don't create it, we only create ws server.
+
+6. Now we let server listen to request.
+    server.listen(3000,()=>{...})
