@@ -1,0 +1,23 @@
+HTTP
+1. HTTP is a protocol. For eg: http://nomadcoders.co In HTTP, the user sends the request and the server sends the response. For eg: the
+user sends a get request and the server responds with a template page.
+
+2. HTTP is stateless. This means that the backend doesn't remember the user and there is no connection between the user and
+backend.
+
+3. In authentication, the server forgets who you are. If you want to send the message to server and you are already logged in
+then you have to send cookies. The cookies tell who you are and then the server responds with correct profile page.
+
+WebSocket
+1. WebSockets help us to do realtime chats and notifications. WebSocket is also a protocol. For eg ws://nomadcoders.co.
+
+2. How does WebSocket work and how does it allow us real-time communication.
+    1. The connection in WebSocket is like a handshake. The browser sends a connection request to the server. The server then accepts/deny
+    the request. But once the handshake is finished. The connection is established just like a string. Because the browser and server are
+    connected, the server remembers who the user is.
+
+    2. Since the browser and server are connected, the server doesn't have to wait for browser to send request. So a browser can send 1
+    message and the server can respond with 3 messages.
+
+    3. Finally the connection is closed after the communication is over.
+    For eg: Wifi connection with your phone. It is always connected.
