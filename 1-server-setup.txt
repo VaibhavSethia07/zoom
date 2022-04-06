@@ -1,0 +1,14 @@
+1. npm init -y. In the package.json, put license as MIT and add description.
+2. npm i nodemon -D.
+3. Create `src` folder, `nodemon.json`, `bable.config.json` file in root directory. In the src folder create `server.js`
+4. touch README.md. Add the description.
+5. Create .gitignore file and add /node_modules.
+6. npm i @babel/core @babel/cli @bable/node @babel/preset-env -D 
+7. In the `nodemon.json` add the property 
+    "exec": "babel-node src/server.js"
+8. In the `bable.config.json` add the property
+    "presets": ["@babel/preset-env"]
+9. In the package.json,add the script
+    "dev": "nodemon". This will see the nodemon.json file and execute it.
+10. npm i express pug.
+11. Setup the server in `server.js` file.
