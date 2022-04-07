@@ -23,5 +23,15 @@ const wss = new WebSocketServer({ server });
 server.listen(PORT, handleListen);
 
 wss.on("connection", (socket) => {
-  console.log(socket);
+  console.log("Connected to Browser ✅");
+  socket.send("Hello!");
+
+  // Receives the message after the timeout send
+  socket.on("message", (message) => {
+    console.log("New message: ", message.toString("utf8"), "from Browser");
+  });
+  // Listening from browser. To see this in action, close the browser
+  socket.on("close", () => {
+    console.log("Disconnected from Browser ❌");
+  });
 });

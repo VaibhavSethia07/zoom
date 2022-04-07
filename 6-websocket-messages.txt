@@ -1,0 +1,32 @@
+1. We get a connection using wss.on("connection",(socket)=>{}). On the app.js(Browser) side, we open the connection using 
+    socket.addEventListener("open",()=>{...})
+
+2. In the app.js (Browser), we listen to the message using
+    socket.addEventListener("open", () => {
+        console.log("Connected to Server ✅");
+    });
+    
+3. When we hit the local host, the browser's console and terminal will have the respective messages.
+
+4. On the server side we send the message using
+    socket.send("Hello!");
+   And on the browser side, we listen for the message.
+    socket.addEventListener("message", (message) => {
+        console.log("New message: ", message.data);
+    });
+
+5. Similarly, on the server side we can listen for the message using
+    socket.on("message", (message) => {
+        console.log("New message: ", message.toString("utf8"), "from Browser");
+    });
+
+6. When we close the browser, the connection closes. To show the messages on both server and browser side we write
+    Code Snippet: server.js
+    socket.on("close", () => {
+        console.log("Disconnected from Browser ❌");
+    });
+
+    Code Snippet: app.js
+    socket.addEventListener("close", () => {
+        console.log("Disconnected from Server ❌");
+    });
