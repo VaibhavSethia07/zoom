@@ -1,0 +1,35 @@
+1. We create first connection between the backend and the frontend using websockets. On the frontend, the browsers
+already have the implementation of websockets. So, we don't have to install anything.
+
+2. To connect to the backend, JavaScript has a constructor. Go to mdn ws.
+
+3. Fontend is in public/js/app.js. WebSocket do not work like HTTP. At the frontend, we do similar to the events like:
+btn.addEventListener('click',callback function)
+The callback function is called when the `click` event happens.
+
+4. In websockets, we also have events with specific names that we are going to listen to and we also have callback function
+that takes socket as parameter.
+
+5. In the server.js, we call wss.on("",(socket)=>{})
+
+What is a socket?
+A socket is the person that just connected i.e the contact line to the browser that just connected.
+wss.on('connection',(socket)=>{
+    console.log(socket);
+})
+
+6. When we start the server by `npm run dev` nothing happens. So we tell our frontend i.e /public/js/app.js to connect to
+the backend.
+Code Snippet: /public/js/app.js
+const socket= new WebSocket("url of server in ws")
+
+7.We can use ws://localhost:3000 but we use the url from browser
+Go to browser's console
+>window.location
+It has the host property which we will use.
+const socket= new WebSocket(`ws://${window.location.host}`);
+
+8. Now run the server and see the console.
+
+Note: In the server.js, the word socket represent the browser that just connected. But on app.js, the word socket represent
+a connection to the server.

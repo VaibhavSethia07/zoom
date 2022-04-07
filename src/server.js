@@ -21,3 +21,7 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
 server.listen(PORT, handleListen);
+
+wss.on("connection", (socket) => {
+  console.log(socket);
+});
