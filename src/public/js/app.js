@@ -1,6 +1,7 @@
 const socket = new WebSocket(`ws://${window.location.host}`);
+const messageList = document.querySelector("ul");
+const messageForm = document.querySelector("form");
 
-// Listening from server
 socket.addEventListener("open", () => {
   console.log("Connected to Server ✅");
 });
@@ -13,7 +14,10 @@ socket.addEventListener("close", () => {
   console.log("Disconnected from Server ❌");
 });
 
-// Sending message from browser. We don't send the message immediately.
-setTimeout(() => {
-  socket.send("Hello from the browser!");
-}, 10000);
+// Notice messageForm.addEventListener()
+messageForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const input = messageForm.querySelector("input");
+  socket.send(input.value);
+});

@@ -1,0 +1,18 @@
+1. In the `home.pug`, we make a form with submit button and unordered list of all messages. This form take a message as
+input from the user. The message is then stored in app.js (Browser-side) and then we send the message to server through the
+socket.
+
+2. We take the form and message list and listen to the submit event. It gives us an event and we take the input from the
+form.
+
+3. We can then send the message to the server using socket.send().
+
+4. We can send the same message back to the browser from server, but we store all the browsers(socket) that are connected to
+server. When we receive the message, we send the message to all the browsers(sockets)
+
+        Brave         Chrome
+    (down) \        (up) /
+            \          /
+                Server
+
+This is how the communication takes place.

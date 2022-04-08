@@ -19,18 +19,20 @@ const handleListen = () => {
 
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
-
+const sockets = [];
 server.listen(PORT, handleListen);
 
 wss.on("connection", (socket) => {
   console.log("Connected to Browser ✅");
-  socket.send("Hello!");
+  sockets.push(socket);
 
-  // Receives the message after the timeout send
   socket.on("message", (message) => {
-    console.log("New message: ", message.toString("utf8"), "from Browser");
+    sockets.forEach((aSocket) => {
+      // If the message comes from Brave, we send the message to all browsers except Brave
+      if (aSocket !== socket) aSocket.send(message.toString("utf-8"));
+    });
   });
-  // Listening from browser. To see this in action, close the browser
+
   socket.on("close", () => {
     console.log("Disconnected from Browser ❌");
   });
