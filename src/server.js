@@ -28,7 +28,9 @@ wss.on("connection", (socket) => {
 
   socket.on("message", (message) => {
     sockets.forEach((aSocket) => {
-      // If the message comes from Brave, we send the message to all browsers except Brave
+      console.log(message.toString("utf-8"));
+      const parsedMessage = JSON.parse(message.toString("utf-8"));
+      console.log(parsedMessage);
       if (aSocket !== socket) aSocket.send(message.toString("utf-8"));
     });
   });

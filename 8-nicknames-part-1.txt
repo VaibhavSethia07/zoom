@@ -1,0 +1,20 @@
+1. We first save the messages in the unordered list. We take the message create a list item tag and set its innerText to 
+message. Next we append the list item in the unordered list. Since, we have 2 forms, we create ids for each one.
+form#nickname
+form#message
+
+const messageForm=document.querySelector('#message');
+
+2. We add nick names to browsers. For this we create a form and save the nick name as a message. When we send the nickname
+to the server, it doesn't differntiate between a message and nickname. So we create a message type which differntiates
+between the message and nickname.
+
+3. Instead of sending text in the socket.send(), we send the JSON.
+    {
+        "type": "message/nickname",
+        "payload": "data"
+    }
+    The socket.send() can only take the string as argument so we stringify JSON and then send it. At the server end we can
+    parse it using JSON.parse().
+
+4. We create a function that takes the argument as type and payload and return a JSON in string format.
