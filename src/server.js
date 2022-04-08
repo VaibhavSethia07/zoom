@@ -23,16 +23,25 @@ const sockets = [];
 server.listen(PORT, handleListen);
 
 wss.on("connection", (socket) => {
+  socket["nickname"] = "anonymous";
   console.log("Connected to Browser ✅");
   sockets.push(socket);
 
   socket.on("message", (message) => {
-    sockets.forEach((aSocket) => {
-      console.log(message.toString("utf-8"));
-      const parsedMessage = JSON.parse(message.toString("utf-8"));
-      console.log(parsedMessage);
-      if (aSocket !== socket) aSocket.send(message.toString("utf-8"));
-    });
+    const parsedMessage = JSON.parse(message.toString("utf-8"));
+    switch (parsedMessage.type) {
+      case "new_message":
+        sockets.forEach((aSocket) => {
+          if (aSocket !== socket)
+            aSocket.send(
+              `${socket.nickname}: ${parsedMessage.payload.toString("utf-8")}`
+            );
+        });
+        break;
+      case "nickname":
+        socket["nickname"] = parsedMessage.payload;
+        break;
+    }
   });
 
   socket.on("close", () => {

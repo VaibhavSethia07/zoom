@@ -1,0 +1,9 @@
+1. The backend does not understand JavaScript objects. So, we need to send strings. We should not rely on the programming
+language because the server to which the frontend is connected may not be a JavaScript server. It can be a Java or Go server.
+This is why we have to send strings.
+
+2. All the servers on the backend decide what to do with those strings. We turn the string into JSON object using JSON.parse().
+
+3. If the type=='new_message', we send the message to all the other browsers. Otherwise we set the nickname field of the socket.
+
+4. If no nickname was provided we by default set the nickname as 'anonymous'
