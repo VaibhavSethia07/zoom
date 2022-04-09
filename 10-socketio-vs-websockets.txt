@@ -1,0 +1,13 @@
+1. The implementation of WebSockets for real-time communication done till now can be replaced by a framework called Socket.IO (Socketio).
+
+2. Socket.IO is a framework that enables real-time, bidirectional and even-based communication. SocketIO is not an implementation of WebSockets but a framework that provies the mentioned features using WebSockets among other things.
+
+3. SocketIO is more resilient than WebSockets. For eg, if your phone doesn't support WebSockets or if something happens to WebSockets, SocketIO will still work.
+
+4. SocketIO sees if the browser supports WebSocket then it uses WebSocket. If there is a proxy or firewall, Socket.IO will still work. If there are no WebSockets, SocketIO uses HTTP long-polling.
+
+5. In case of SocketIO, if Wi-Fi goes away for 1 ms, SocketIO will try to reconnect which is something we have to code in WebSocket.
+
+6. Most of the casino and gambling websites need real-time communication, so they use SocketIO.
+
+7. SocketIO is heavier than WebSocket. API of SocketIO is very similar to that of WebSocket's.
