@@ -22,6 +22,12 @@ const io = SocketIO(server);
 
 io.on("connection", (socket) => {
   console.log(socket);
+
+  socket.on("room", (msg, done) => {
+    console.log(msg);
+    // Check browser's console for output
+    done();
+  });
 });
 
 // const sockets = [];

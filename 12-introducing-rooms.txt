@@ -1,0 +1,11 @@
+1. When the user goes to our website, he sees a form that tells them to join/create a room. The conecpt of room helps us to
+learn about other things that SocketIO has, for eg: Broadcasting a message to a room.
+
+2. We create a form that takes the room name as input with a button to enter a room. If we join a room that doesn't exist that
+means we create a room and then enter a room.
+
+3. Handle the submit event. In the handleSubmit function, we send the room name to server using emit() function. In WebSockets
+we used send(). We don't necessarily have to send string, we can send anything.
+
+4. The emit event can be of any type. After emit type, we can send any number of arguments and a function which will be executed
+by server in browser.
