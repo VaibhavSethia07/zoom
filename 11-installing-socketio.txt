@@ -1,0 +1,36 @@
+1. Comment the code wss.on(){...}, because we are going to compare WebSocket and Socket.IO code.
+
+2. npm i socket.io 
+   import SocketIO from 'socket.io'
+
+3. Create SocketIO server.
+    Code Snippet: server.js
+        const server= http.createServer(app);
+        const io = new SocketIO(server); 
+
+4. Just by doing this SocketIO will give us a URL
+    http://localhost/3000/socket.io/socket.io.js
+    Why we have to do like this?
+    This is because SocketIO is not like an implementation of WebSocket. SocketIO has extra functions like reconnect or when
+    WebSockets are not available the SocketIO uses something else.
+
+    This means just like we have to install SocketIO in the server we have to install SocketIO in the client. In the past,
+    we did not have to install anything because Browser used to gives WebSocket API. This WebSocket API is not compatible
+    with SocketIO.
+
+5. Import the code written on http://localhost/3000/socket.io/socket.io.js in the frontend.
+    Delete all code from app. Delete the form code in `home.pug`, except the JavaScript script code. Add the code
+    script(src='/socket.io/socket.io.js')
+
+6. We first create the rooms. So, if a user wants to do a chat he first has to join a room. 
+
+7. In the server.js, 
+    io.on('connection',(socket)=>{
+        console.log(socket);
+    })
+
+8. In the app.js, we use the code we just installed in the `home.pug`. In the browser's window (console) we get a function
+`io` that automatically connects to a SocketIO backend.
+    const socket= io();
+
+
