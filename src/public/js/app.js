@@ -14,12 +14,22 @@ const showRoom = () => {
   h3.innerText = `Room ${roomName}`;
 };
 
+const addWelcomeNote = (message) => {
+  const ul = room.querySelector("ul");
+  const li = document.createElement("li");
+  li.innerText = msg;
+  ul.append(li);
+};
+
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const input = form.querySelector("input");
-  // User defined event, any type of data and a function to be executed by server on browser
   roomName = input.value;
   socket.emit("enter_room", input.value, showRoom);
   input.value = "";
+});
+
+socket.on("welcome", (message) => {
+  addWelcomeNote(message);
 });

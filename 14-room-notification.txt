@@ -1,0 +1,17 @@
+1. We are going to send a message to everyone in the room that someone has joined.
+    Eg- Code Snippet: server.js 
+     io.connection("connection",(socket)=>{
+
+        // To 1 room
+        socket.to('room name').emit('an event',{data: 'some data'});
+
+        // To many rooms
+        socket.to(['room1','room2']).emit('an event',{data: 'some data'});
+    })
+
+2. In the frontend, we are going to react to the event using `socket.on()` by
+adding message to the unordered list.
+
+3. Note: SocketIO knows we send message to everybody ecept yourself. 
+
+4. To see the output use 1 more browser which will get the joining notification.
