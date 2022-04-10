@@ -21,12 +21,16 @@ const server = http.createServer(app);
 const io = SocketIO(server);
 
 io.on("connection", (socket) => {
-  console.log(socket);
+  socket.onAny((event) => {
+    console.log(`Event: ${event}`);
+  });
+  socket.on("enter_room", (room, showRoom) => {
+    console.log(socket.id); // _rChze6mX4TX0VLyAAAD
+    console.log(socket.rooms); // Set(1) { '_rChze6mX4TX0VLyAAAD' }
+    socket.join(room);
+    console.log(socket.rooms); // Set(2) { '_rChze6mX4TX0VLyAAAD', 'nico' }
 
-  socket.on("room", (msg, done) => {
-    console.log(msg);
-    // Check browser's console for output
-    done();
+    showRoom();
   });
 });
 

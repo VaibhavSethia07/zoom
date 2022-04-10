@@ -1,0 +1,31 @@
+1. Rooms are important for WebSockets because the casinos that uses SokcetIO need rooms. For eg: some WebSockets are in a
+room where they send messages among each other. Not all WebSockets need to talk to everybody.
+
+Note: A room is a group of WebSockets.
+
+2. Rooms are used in online video games, Tinder. SocketIO supports rooms natively.
+    Lets the socket join a room.
+    1. socket.join(room_name);
+    To know about more functions visit https://socket.io/docs/v4/server-socket-instance/
+    `socket.id` gives the id of socket.
+
+    2. socket.onAny((event)=>{
+        console.log(`Socket Event: ${event}`);
+    })
+    socket.onAny() acts like a middleware.
+
+3. Intitally every socket is in a room with itself. So the room has the id same as that of socket. This means all sockets
+have private room between itself and server. 
+
+4. We can leave a room or send message to all others in a room.
+
+5. In the form once we join a room we have to hide the form and then show the room.
+    Code Snippet: app.js
+    const room=document.getElementById('room');
+    room.hidden=true
+
+6. After we join a room we call a function `showRoom`. This function hides the original form and unhides the room form. We
+call the function on the server.
+
+7.Next we tell people the name of the room where they are. Initially the room name is empty but when we join a room we show
+the room name in h3. 
