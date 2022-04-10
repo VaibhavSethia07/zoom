@@ -1,0 +1,15 @@
+1. To let everyone we disconnected, we use `disconnecting` event. Disconnecting means the client is going to be disconnected
+but hasn't left its rooms yet.
+
+2. So when a browser disconnects, we let every room in which the browser was know that the browser left. This is done in
+`server.js` because on the app side we don't have access to rooms.
+
+3. On the server side, we emit the event and on the app side we handle the event.
+
+4. Sending a message, we take the input from the form, add an eventlistener for the submit event and then emit the event
+`new_message`. While emitting the event, we pass the function which lists our message as `You: message`
+
+5. On the server side, we receive the message, with room and function to be called and handle the event.
+
+Note: While handling submit event and emiting an event store input.value in separate variable because it will conflict with
+input.value=""

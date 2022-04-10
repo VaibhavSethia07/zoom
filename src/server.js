@@ -24,11 +24,21 @@ io.on("connection", (socket) => {
   socket.onAny((event) => {
     console.log(`Event: ${event}`);
   });
+
   socket.on("enter_room", (roomName, showRoom) => {
     socket.join(roomName);
     showRoom();
 
     socket.to(roomName).emit("welcome", `Someone has joined the room!`);
+  });
+
+  socket.on("disconnecting", () => {
+    socket.rooms.forEach((room) => socket.to(room).emit("bye"));
+  });
+
+  socket.on("new_message", (message, roomName, done) => {
+    socket.to(roomName).emit("new_message", message);
+    done();
   });
 });
 
