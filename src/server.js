@@ -20,16 +20,29 @@ const handleListen = () => {
 const server = http.createServer(app);
 const io = SocketIO(server);
 
+const publicRooms = () => {
+  const sids = io.sockets.adapter.sids;
+  const rooms = io.sockets.adapter.rooms;
+  let publicRooms = [];
+
+  // Note the ordering
+  rooms.forEach((value, key) => {
+    // Check for the presence of room in socket id
+    if (sids.get(key) !== undefined) publicRooms.push(key);
+  });
+  return publicRooms;
+};
+
 io.on("connection", (socket) => {
   socket["nickname"] = "Anonymous";
   socket.onAny((event) => {
     console.log(`Event: ${event}`);
   });
-
   socket.on("enter_room", (roomName, showRoom) => {
     socket.join(roomName);
     showRoom();
-
+    console.log(io.sockets.adapter);
+    console.log(publicRooms());
     socket
       .to(roomName)
       .emit("welcome", `${socket.nickname} has joined the room!`);

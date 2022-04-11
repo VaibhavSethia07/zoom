@@ -1,0 +1,59 @@
+Concept of Adapter
+1. An adapter is basically a thing that synchronizes the application among different servers. Till now we had been using
+adapter on memory of server. We are not saving anything to the database. Everytime we restart our server, all the rooms and
+sockets are gone.
+
+2. We want to have a database at the backend. Also, when we have a lot of clients, we have to keep the connection open to
+all those clients. The browser opens only 1 connection to a server but many browsers connect to a server. So a server has
+many connections comming in. And the server keeps many connections on the memory. 
+                    Server A
+    Client 1    <--    Socket 
+    Client 2    <--    Socket
+    Client 3    <--    Socket
+
+                    Server B
+    Client 4    <--    Socket 
+    Client 5    <--    Socket
+    Client 6    <--    Socket
+
+3. Here, all the clients are looking at the same frontend but they are connected to differnt servers. Without the adapter
+the client in Server A and not communicate to client in Server B. In real world, we use adapters.
+
+                    Server A
+    Client 1    <--    Socket <------
+    Client 2    <--    Socket <------ Mongo adapter \(down)
+    Client 3    <--    Socket <------                \    
+                                                    MongoDB
+                    Server B                          / (down)
+    Client 4    <--    Socket <------                /
+    Client 5    <--    Socket <------ Mongo adapter
+    Client 6    <--    Socket <------
+
+4. If a client in Server A wants to send a message to the client in Server B, then that message is going to go to 
+            Server A --> adapter --> database --> adapter --> Server B 
+
+5. An adapter is a window to the application. An adapter tell us who is connected and how many rooms are currently
+in our application.
+Code Snipper: server.js
+io.on("connection",(socket)=>{
+    ...
+     console.log(io.sockets.adapter);
+})
+
+room->set of socket ids
+rooms: Map(2) {
+'ytRTyEQRA-LN4EMvAAAD' => Set(1) { 'ytRTyEQRA-LN4EMvAAAD' },
+'nico' => Set(1) { 'ytRTyEQRA-LN4EMvAAAD' }
+},
+
+socketid->set of room ids
+sids: Map(1) {
+'ytRTyEQRA-LN4EMvAAAD' => Set(2) { 'ytRTyEQRA-LN4EMvAAAD', 'nico' }
+}
+
+6. Socket ids and Rooms are same because we know sockets have exclusive rooms. We can send private messages to the sockets.
+
+7. `sids` shows mapping between socket id and private and public rooms. So if we want to get all public rooms we check for
+the presence of room id in the set of socket ids. If not present then it is a public room.
+const food=new Map()
+food.set('pizza',12)
