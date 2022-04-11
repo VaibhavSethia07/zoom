@@ -1,0 +1,8 @@
+1. The logic of adding the nicknames remains the same. We make a form in the room division. We take the nickname and emit
+the event `save_nickname` in app.js. The server then listens to the event and saves the nickname as socket['nickname'].
+Initially the nickname is set to `anonymous`.
+
+2. Every where update `someone` with nickname. 
+
+3. Code challenge: Till now we are entering the room and then setting our nickname. So whenever we join we join as anonymous.
+    So ask the nickname while entering the room.

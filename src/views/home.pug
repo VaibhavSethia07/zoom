@@ -11,15 +11,21 @@ html(lang="en")
         header 
             h1 Zoom
         main
+            
             div#welcome
-                form
+                form#nickname 
+                    input(type="text" placeholder='Enter nickname' required)
+                    button Save
+                    
+                form#roomname
                     input(type="text" placeholder="Enter room name" required)
                     button Enter 
 
             div#room
                 h3 
                 ul
-                form
+                
+                form#message
                     input(type="text" placeholder='Type message' required)
                     button Send 
 
