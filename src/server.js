@@ -31,6 +31,11 @@ const getPublicRooms = () => {
   return publicRooms;
 };
 
+const getRoomSize = (roomName) => {
+  // We put ? to handle the case if roomName is not given
+  return io.sockets.adapter.rooms.get(roomName)?.size;
+};
+
 io.on("connection", (socket) => {
   socket["nickname"] = "Anonymous";
   socket.onAny((event) => {
@@ -42,12 +47,22 @@ io.on("connection", (socket) => {
     io.sockets.emit("rooms_created", getPublicRooms());
     socket
       .to(roomName)
-      .emit("welcome", `${socket.nickname} has joined the room!`);
+      .emit(
+        "welcome",
+        `${socket.nickname} has joined the room!`,
+        getRoomSize(roomName)
+      );
   });
 
   socket.on("disconnecting", () => {
-    socket.rooms.forEach((room) =>
-      socket.to(room).emit("bye", `${socket.nickname} left the room:(`)
+    socket.rooms.forEach((roomName) =>
+      socket
+        .to(roomName)
+        .emit(
+          "bye",
+          `${socket.nickname} left the room:(`,
+          getRoomSize(roomName) - 1
+        )
     );
   });
 

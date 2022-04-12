@@ -1,0 +1,6 @@
+1. We need to display the count of people that are in our room. And this count needs to be updated when a person joins/
+leaves the room.
+
+2. The count of people can be found from the size of set of socketids stored for the corresponding room in the `rooms` map.
+
+3. We pass the getRoomSize() in the `disconnecting` event because there we have access to roomName.
