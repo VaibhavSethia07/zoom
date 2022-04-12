@@ -20,15 +20,13 @@ const handleListen = () => {
 const server = http.createServer(app);
 const io = SocketIO(server);
 
-const publicRooms = () => {
+const getPublicRooms = () => {
   const sids = io.sockets.adapter.sids;
   const rooms = io.sockets.adapter.rooms;
   let publicRooms = [];
 
-  // Note the ordering
   rooms.forEach((value, key) => {
-    // Check for the presence of room in socket id
-    if (sids.get(key) !== undefined) publicRooms.push(key);
+    if (sids.get(key) === undefined) publicRooms.push(key);
   });
   return publicRooms;
 };
@@ -41,8 +39,7 @@ io.on("connection", (socket) => {
   socket.on("enter_room", (roomName, showRoom) => {
     socket.join(roomName);
     showRoom();
-    console.log(io.sockets.adapter);
-    console.log(publicRooms());
+    io.sockets.emit("rooms_created", getPublicRooms());
     socket
       .to(roomName)
       .emit("welcome", `${socket.nickname} has joined the room!`);
@@ -52,6 +49,10 @@ io.on("connection", (socket) => {
     socket.rooms.forEach((room) =>
       socket.to(room).emit("bye", `${socket.nickname} left the room:(`)
     );
+  });
+
+  socket.on("disconnect", () => {
+    io.sockets.emit("rooms_created", getPublicRooms());
   });
 
   socket.on("new_message", (message, roomName, done) => {

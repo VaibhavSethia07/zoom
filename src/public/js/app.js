@@ -66,3 +66,15 @@ socket.on("bye", (message) => {
 socket.on("new_message", (message) => {
   addMessage(message);
 });
+
+socket.on("rooms_created", (rooms) => {
+  const roomsList = welcome.querySelector("ul");
+  // Always empty the previous list to avoid appending to same list
+  roomsList.innerHTML = "";
+
+  rooms.forEach((room) => {
+    const li = document.createElement("li");
+    li.innerText = room;
+    roomsList.append(li);
+  });
+});

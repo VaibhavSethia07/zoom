@@ -1,0 +1,15 @@
+1. We are going to notify everybody that a new room is created. This is done using
+    io.sockets.emit('event_name',msg);
+   This command sends message to everyone.
+
+2. Here the message is the list of public room. 
+   Note: socket.on('event_name', console.log); is same as
+         socket.on('event_name,(msg)=>console.log(msg));
+
+3. So we show a list of public rooms when a socket creates a room and display the list of remaining room when the clients
+of a disconnect.
+
+4. Note that the `disconnecting` event happens just before the client has left. So the room which is being exiting still
+exists. To solve this we use `disconnect` event.
+
+5. We listen to the `created_rooms` event in app.js and populate the list.
