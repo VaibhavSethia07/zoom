@@ -1,0 +1,28 @@
+1. There is an admin-ui for backend where we can see all the sockets, clients.
+
+2. npm i @socket.io/admin-ui. Look at https://socket.io/docs/v4/admin-ui/
+
+3. const { createServer } = require("http");
+const { Server } = require("socket.io");
+const { instrument } = require("@socket.io/admin-ui");
+
+const httpServer = createServer();
+
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true
+  }
+});
+
+instrument(io, {
+  auth: false
+});
+
+httpServer.listen(3000);
+
+3. Import instrument, and change the way we import Sever. We can even use password for authorization.
+
+4. Visit https://admin.socket.io
+Server URL: http://localhost:3000/admin
+Empty path. No username and password. Enable WebSockets.

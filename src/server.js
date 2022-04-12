@@ -1,6 +1,7 @@
 import express from "express";
 import http from "http";
-import SocketIO from "socket.io";
+const { Server } = require("socket.io");
+const { instrument } = require("@socket.io/admin-ui");
 const app = express();
 const PORT = 3000;
 
@@ -18,7 +19,16 @@ const handleListen = () => {
 };
 
 const server = http.createServer(app);
-const io = SocketIO(server);
+const io = new Server(server, {
+  cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true,
+  },
+});
+
+instrument(io, {
+  auth: false,
+});
 
 const getPublicRooms = () => {
   const sids = io.sockets.adapter.sids;
