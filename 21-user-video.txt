@@ -1,0 +1,14 @@
+1. Delete everything related to chat on server.js, home.pug, and app.js.
+
+2. Before doing any real-time video communication, we first need to get video. We need to show the user's video and mute/unmute and camera on/off button. All this can be done with JavaScript.
+
+3. To get the face's video, 
+    Code Snippet: home.pug
+    video#myFace(autoplay, playsinline, width="400", height="400")
+
+    `playsinline` is a property that mobile browser's need. We know when we click a video, that video becomes fullscreen. When we use `playsinline`, the video is not going to be played
+    fullscreen, it is played only on website.
+
+4. We grab the `video` tag in the app.js. Next, we need to get the stream. Pass the stream in the video tag using `srcObject` property.
+
+5. We 2 buttons for mute/unmute and turn camera on/off. As we click them their text changes.

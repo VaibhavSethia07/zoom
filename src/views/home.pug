@@ -11,26 +11,9 @@ html(lang="en")
         header 
             h1 Zoom
         main
-            
-            div#welcome
-                form#nickname 
-                    input(type="text" placeholder='Enter nickname' required)
-                    button Save
-                    
-                form#roomname
-                    input(type="text" placeholder="Enter room name" required)
-                    button Enter 
-
-                h4 Open Rooms: 
-                ul 
-
-            div#room
-                h3 
-                ul
-                
-                form#message
-                    input(type="text" placeholder='Type message' required)
-                    button Send 
-
+            div#myStream
+                video#myFace(autoplay, playsinline, height="400", width="400")
+                button#mute Mute 
+                button#camera Turn Camera Off
         script(src='/socket.io/socket.io.js')
         script(src="/public/js/app.js") 
