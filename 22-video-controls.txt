@@ -1,0 +1,16 @@
+1. We can acces the audioTracks and videoTracks from the streams and invert their enabled property when the corresponding
+button is clicked.
+
+Note: getAudioTracks() and getVideoTracks() gives us an array with 1 element.
+    Code Snippet: app.js
+    stream.getAudioTracks().forEach(track=>track.enabled= !track.enabled);
+
+2. Go to MediaDevices Web API. enumerateDevices() tell all the media input and output devices connected to the computer. We
+call the function getCameras() that gives us a list of cameras.
+
+Note: enumerateDevices() returns a promise, so we use try-catch block.
+
+3. From the array of devices we only select the devices with kind: 'videoinput'.
+
+4. In the home.pug, we make a select tag. Grab the select tag in app.js, add options to it with value as deviceId and display
+text as label property of device.
