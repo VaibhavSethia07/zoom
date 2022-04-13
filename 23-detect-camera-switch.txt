@@ -1,0 +1,19 @@
+1. We need to detect when the user changes the camera, so the stream can start again with a new camera.
+
+2. On the camera select, we need to detect the input change and handle it. The select value is stored in
+select-tag-variable.value. It will give us the id with which we can start a new stream.
+
+3. To start a new stream, we call the `getMedia()` with the new device id. To tell the browser to use specific camera.
+Go to https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+In the getUserMedia() we send some constraints. In the constraints we can set the camera using
+    video: {facingMode: "user"}
+    or
+    video: {facingMode: {exact: "environment"}}
+    or
+    video: { deviceId: myPreferredCameraDeviceId }
+
+4. Initially, we show the user camera, but if we select any other videooutput, we use that device id and start the stream.
+on that. 
+
+5. Next thing is that we are getting the cameras everytime, but we only have to get cameras once. So if the getMedia() doesn't
+get the camera id, it fetches all the cameras.   

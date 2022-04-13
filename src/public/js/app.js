@@ -12,35 +12,44 @@ const getCameras = async () => {
   try {
     const devices = await navigator.mediaDevices.enumerateDevices();
     const cameras = devices.filter((device) => device.kind === "videoinput");
-    console.log(devices);
-    console.log(cameras);
-
+    const currentCamera = stream.getVideoTracks()[0];
     cameras.forEach((camera) => {
       const option = document.createElement("option");
-      option.label = camera.label;
+      option.innerText = camera.label;
       option.value = camera.deviceId;
       camerasSelect.appendChild(option);
+
+      if (currentCamera.label === camera.label) option.selected = true;
     });
   } catch (err) {
     console.log(err);
   }
 };
 
-const getMedia = async () => {
+const getMedia = async (deviceId) => {
+  const initialContraint = {
+    audio: true,
+    video: { facingMode: "user" },
+  };
+
+  const cameraConstraint = {
+    audio: true,
+    video: { deviceId: { exact: deviceId } },
+  };
   try {
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true,
-    });
+    stream = await navigator.mediaDevices.getUserMedia(
+      deviceId ? cameraConstraint : initialContraint
+    );
     myFace.srcObject = stream;
-    console.log(stream);
-    await getCameras();
+
+    // Get the cameras list once
+    if (!deviceId) await getCameras();
   } catch (err) {}
 };
 
 muteBtn.addEventListener("click", () => {
   const tracks = stream.getAudioTracks();
-  console.log(tracks);
+
   if (mute) {
     muteBtn.innerText = "Mute";
   } else {
@@ -52,7 +61,7 @@ muteBtn.addEventListener("click", () => {
 
 cameraBtn.addEventListener("click", () => {
   const tracks = stream.getVideoTracks();
-  console.log(tracks);
+
   if (cameraOff) {
     cameraBtn.innerText = "Turn Camera Off";
   } else {
@@ -60,6 +69,10 @@ cameraBtn.addEventListener("click", () => {
   }
   tracks.forEach((track) => (track.enabled = !track.enabled));
   cameraOff = !cameraOff;
+});
+
+camerasSelect.addEventListener("input", () => {
+  getMedia(camerasSelect.value);
 });
 
 getMedia();
