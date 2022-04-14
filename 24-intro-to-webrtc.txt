@@ -1,0 +1,28 @@
+WebRTC- Web Real Time Communication
+
+1. WebRTC is a technology that allows us to have real-time communication. It is different from SocketIO in the sense that
+it is a peer-to-peer communication. 
+
+2. When we built the chat using SocketIO it was not peer-to-peer because there were many websockets that were connected to
+1 server. And when 1 websocket sent a message that message was sent from the websocket to the server and then the server
+broadcasted the message to everybody else.
+
+3. With WebRTC we have peer-to-peer communication. This means my audio/video and the text is not going to the server but
+directly to the other peer. If we has to upload our audio/video to the server and other browser had to download the audio
+/video then that server would be very expensive and would fall all the time.
+
+Note: With WebRTC we talk directly, and we do need a server, not to transmit audio and video but for signalling. When the
+signalling is done we do the peer-to-peer communication.
+
+                                        Server
+                                    /          \
+                        Signalling /            \ Signalling
+                                  /              \
+                                 /                \
+                                /                  \
+                    Brave   <-------------------------> Chrome
+                            Peer to Peer Communication
+
+4. Why do we need a server for signalling?
+How do we know where the other browser is? What is the IP Address of the browser? Is the browser behind a firewall. For all
+this we need a server.
