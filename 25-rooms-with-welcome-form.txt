@@ -1,0 +1,19 @@
+1. We will show the media stream only when the user joins a room. So intially the myFace section is hidden and when the
+user, enters the room we hide the welcome form and show the myFace section.
+
+2. Also we use 
+    Code Snippet: app.js
+    socket.emit('join_room',roomName) 
+
+    server.js
+    io.on("connection", (socket) => {
+
+        socket.on("join_room", (roomName, done) => {
+            socket.join(roomName);
+            done();
+            socket.to(roomName).emit("welcome");
+        });
+    });
+
+    When we join a room only then the done() function executes which the startMedia(). Also when we join a room we send a
+    notification to all other users in the room that someone has joined the room which is handled in the app.js using on()
