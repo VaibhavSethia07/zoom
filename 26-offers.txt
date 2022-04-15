@@ -1,0 +1,61 @@
+1. We follow the WebRTC.png. We are getting the getUserMedia() and now we have to addStream(). Before this we have to create
+a RTC connection in both the browsers and then we connect the connections.
+
+2. We call the startMedia() as soon as we enter the room, no mater if there are other people in room or not. We call the
+makeConnection(). We create a global variable peerConnection so that the connection can be accessed in any function.
+    Code Snippet: app.js
+    let peerConnection=NULL;
+
+    const makeConnection=()=>{
+        peerConnection=new RTCPeerConnection()
+    }
+
+3. Next we need to use addStream(). Note that the function name is changed but the goal is same. So we take the stream and
+put it into the connection. So we will be able to send audio/video through the connection.
+    Code Snippet: server.js
+    const makeConnection=()=>{
+        peerConnection=new RTCPeerConnection();
+        console.log(stream.getTracks());
+
+        stream.getTracks().forEach(track=> peerConnection.addTrack(track, stream))
+    }
+
+4. Next we create an offer. Note that Peer A creates an offer and Peer B creates an answer. The Offer is created on the
+Brave browser when the Chrome browser joins the room because the Brave browser gets the notification when someone joins
+the room.
+    Code Snippet: app.js
+    socket.on('welcome',async ()=>{
+        const offer=await peerConnection.createOffer();
+        console.log(offer);
+    })
+
+5. Next step is to setLocalDescription()
+    Code Snippet: app.js
+    socket.on('welcome',async ()=>{
+        const offer=await peerConnection.createOffer();
+        peerConnection.setLocalDescription(offer);
+        console.log(offer);
+    })
+
+6. Next we have to send the offer. We have to tell SocketIO to which room we are sending the offer, so we need to pass
+room name as well.
+    Code Snippet: app.js (This code will run on Brave browser)
+    socket.on('welcome',async ()=>{
+        const offer=await peerConnection.createOffer();
+        peerConnection.setLocalDescription(offer);
+        console.log("sent the offer");
+        socket.emit("offer",offer,roomName);
+    })
+
+    Code Snippet: server.js
+    io.on('connection',(socket)=>{
+        socket.on('offer',(offer,roomName)=>{
+            socket.to(roomName).emit('offer',offer);
+        })
+    })
+
+7. On the browser, a new event comes.
+    Code Snippet: app.js
+    socket.on('offer',(offer)=>{
+        console.log(offer);
+    })

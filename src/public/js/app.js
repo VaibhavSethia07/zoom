@@ -10,12 +10,14 @@ let stream = null;
 let mute = false;
 let cameraOff = false;
 let roomName = null;
+let peerConnection = null;
 myStream.hidden = true;
 
-const startMedia = () => {
+const startMedia = async () => {
   welcome.hidden = true;
   myStream.hidden = false;
-  getMedia();
+  await getMedia();
+  makeConnection();
 };
 
 const getCameras = async () => {
@@ -44,7 +46,7 @@ const getMedia = async (deviceId) => {
 
   const cameraConstraint = {
     audio: true,
-    video: { deviceId: { exact: deviceId } },
+    video: { deviceId: deviceId },
   };
   try {
     stream = await navigator.mediaDevices.getUserMedia(
@@ -92,6 +94,22 @@ welcome.addEventListener("submit", (event) => {
   input.value = "";
 });
 
-socket.on("welcome", () => {
+// Brave gets it
+socket.on("welcome", async () => {
   console.log(`Someone joined the room ${roomName}:)`);
+  const offer = await peerConnection.createOffer();
+  peerConnection.setLocalDescription(offer);
+  socket.emit("offer", offer, roomName);
+  console.log(offer);
 });
+
+// Chrome gets it
+socket.on("offer", (offer) => {
+  console.log(offer);
+});
+
+const makeConnection = () => {
+  peerConnection = new RTCPeerConnection();
+  console.log(stream.getTracks());
+  stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
+};
