@@ -55,7 +55,9 @@ const getMedia = async (deviceId) => {
     myFace.srcObject = stream;
     console.log(stream);
     if (!deviceId) await getCameras();
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 muteBtn.addEventListener("click", () => {
@@ -86,11 +88,12 @@ camerasSelect.addEventListener("input", () => {
   getMedia(camerasSelect.value);
 });
 
-welcome.addEventListener("submit", (event) => {
+welcome.addEventListener("submit", async (event) => {
   event.preventDefault();
   const input = welcome.querySelector("input");
   roomName = input.value;
-  socket.emit("join_room", input.value, startMedia);
+  await startMedia();
+  socket.emit("join_room", input.value);
   input.value = "";
 });
 
@@ -104,12 +107,19 @@ socket.on("welcome", async () => {
 });
 
 // Chrome gets it
-socket.on("offer", (offer) => {
-  console.log(offer);
+socket.on("offer", async (offer) => {
+  peerConnection.setRemoteDescription(offer);
+  const answer = await peerConnection.cretaeAnswer();
+  console.log(answer);
+  peerConnection.setLocalDescription(answer);
+  socket.emit("answer", answer, roomName);
+});
+
+socket.on("answer", (answer) => {
+  peerConnection.setRemoteDescription(answer);
 });
 
 const makeConnection = () => {
   peerConnection = new RTCPeerConnection();
-  console.log(stream.getTracks());
   stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
 };

@@ -1,0 +1,55 @@
+1. We have to setRemoteDescription(). We create the offer in Peer A and set local description and then when Peer B receives
+the peerConnection we setRemoteDescription().
+    Code Snippet: app.js
+    socket.on("offer", (offer) => {
+        peerConnection.setRemoteDescription(offer)
+        console.log(offer);
+    });
+
+2. When we run the app, we get the error- peerConnection is undefined. This is because when Chrome joins a room it emits
+the event `join_room`, server listens to the event and then allows the browser to join room, call the event `welcome`. 
+The `app.js` listens to the `welcome` event and emits the `offer` event. All this happens very quickly. So by the time
+offer arrives the peerConnection doesn't exist yet. 
+
+3. So before joining the room we need to start making connection. This means instead of passing the startMedia() as a
+callback, we call it separately as async/await function.
+
+4. We alrady have got the media stream, added the stream. Next, we create an answer.
+    Code Snippet: app.js
+    socket.on("offer", (offer) => {
+        peerConnection.setRemoteDescription(offer)
+        const answer=await peerConnection.createAnswer();
+        console.log(answer);
+    });
+
+5. Next we setLocalDescription() of the answer.
+    Code Snippet: app.js
+    socket.on("offer", async (offer) => {
+        peerConnection.setRemoteDescription(offer)
+        const answer=await peerConnection.createAnswer();
+        peerConnection.setLocalDescription(answer);
+        console.log(answer);
+    });
+
+6. Sent the answer from Chrome which is handled by the Brave via the socket. When we get the answer we need to notify
+everybody in the room.
+    Code Snippet: app.js
+    socket.on("offer", async (offer) => {
+        peerConnection.setRemoteDescription(offer)
+        const answer=await peerConnection.createAnswer();
+        peerConnection.setLocalDescription(answer);
+        socket.emit('answer',answer,roomName)
+        console.log(answer);
+    });
+
+    Code Snippet: server.js
+    socket.on('answer',(answer,roomName)=>{
+        socket.to(roomName).emit('answer',answer);
+    })
+
+7. In the app.js, we listen to the `answer` event and setRemoteDescription().
+    Code Snippet: app.js
+    socket.on("answer", async (answer) => {
+       peerConnection.setRemoteDescription(answer);
+       console.log(answer);
+    });
