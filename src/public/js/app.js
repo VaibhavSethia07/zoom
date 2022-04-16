@@ -53,7 +53,7 @@ const getMedia = async (deviceId) => {
       deviceId ? cameraConstraint : initialContraint
     );
     myFace.srcObject = stream;
-    console.log(stream);
+    console.log("My media stream ", stream);
     if (!deviceId) await getCameras();
   } catch (err) {
     console.log(err);
@@ -102,24 +102,45 @@ socket.on("welcome", async () => {
   console.log(`Someone joined the room ${roomName}:)`);
   const offer = await peerConnection.createOffer();
   peerConnection.setLocalDescription(offer);
+  console.log("offer sent by the browser");
   socket.emit("offer", offer, roomName);
-  console.log(offer);
 });
 
 // Chrome gets it
 socket.on("offer", async (offer) => {
+  console.log("offer received by the browswer");
   peerConnection.setRemoteDescription(offer);
-  const answer = await peerConnection.cretaeAnswer();
-  console.log(answer);
+  const answer = await peerConnection.createAnswer();
+
   peerConnection.setLocalDescription(answer);
+  console.log("answer sent by the browser");
   socket.emit("answer", answer, roomName);
 });
 
 socket.on("answer", (answer) => {
+  console.log("answer received by the browser");
   peerConnection.setRemoteDescription(answer);
+});
+
+socket.on("ice", (ice) => {
+  console.log("received the ice candidate");
+  peerConnection.addIceCandidate(ice);
 });
 
 const makeConnection = () => {
   peerConnection = new RTCPeerConnection();
   stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
+
+  peerConnection.addEventListener("icecandidate", (data) => {
+    console.log(data);
+    console.log("sent the ice candidate");
+    socket.emit("ice", data.candidate, roomName);
+  });
+
+  peerConnection.addEventListener("track", (data) => {
+    console.log("got a stream from my peer");
+    console.log("Peer's media stream ", data.streams[0]);
+    const peerFace = document.getElementById("peerStream");
+    peerFace.srcObject = data.streams[0];
+  });
 };

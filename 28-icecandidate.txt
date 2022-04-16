@@ -1,0 +1,49 @@
+1. When we have an offer and an answer then both the peers are going to fire the `icecandidate` event.
+
+2. `ICEcandidate` event is an internet connectivity establishment event. It describes the protocols needed for WebRTC to be
+able to communicate with remote device. Typically a no. of candidates are proposed by each of the connection. And then they
+mutually agree upon 1.
+
+3. We first listen for the `icecandidate` event.
+    Code Snippet: app.js
+    const makeConnection=()=>{
+        peerConnection.addEventListener('icecandidate',(data)=>{
+            console.log('got ice candidate');
+            console.log(data);
+        })
+    }
+    
+
+4. Note: The error of STUN server will be handled later.
+
+5. The candidates created in Brave browser needs to be sent to Chrome browser. Here `ice` is the ice candidate. 
+    Code Snippet: app.js
+    peerConnection.addEventListener('icecandidate',(data)=>{
+        socket.emit('ice',data.candidate,roomName);
+    })
+    
+    Code Snippet: server.js
+    socket.on('ice',(ice,roomName)=>{
+        socket.to(roomName).emit('ice',ice)
+    })
+
+6. When we get a candidate we are going to addIceCandidate()
+    Code Snippet: app.js
+    socket.on('ice',ice=>{
+        peerConnection.addIceCandidate(ice);
+    })
+
+7. The last thing we have to do is to register the `addStream` event.
+    Code Snippet: app.js
+    const makeConnection=()=>{
+        peerConnection.addEventListener('addstream',(data)=>{
+            console.log('got an event from my peer');
+            console.log(data);
+        })
+    }
+
+8. We add another video tag in `home.pug` to show peer's stream and grab it in the addStream event listener, set the
+srcObject to data's stream.
+Note addstream event is deprecated. Use `track` event.
+
+Note: Use Inconito for the other browser.
