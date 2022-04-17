@@ -1,0 +1,20 @@
+1. There is a problem with the camera change. If we change the camera then that is reflected in our stream but not on the other peer's browser.
+
+2. So we use code of getMedia() and replace the original stream. All this will be done for the peer connection. When we update the camera, we update the stream as well for our peer.
+
+3. If the peer connection exists, we use the peerConnection.getSenders(). It has the field `track` and property= 'kind':'video' which is replaced by the new stream.
+
+4. A sender allows us to send media stream tracks to our peers.
+
+5. We still have a problem because if we go to this website with our phone it is not going to work.
+
+Note: To make a website public temporarily, we can use `localtunnel` package.
+npm i -g localtunnel
+
+`localtunnel` allows us to share the server with the world.
+
+6. We call `localtunnel` using `lt` command. It gives us a variety of option. We can share our server on a specific port using --p flag
+--> lt --port 3000
+It will give us a url on which we can see our website. Also run the local server.
+
+7. It should not work because of STUN.

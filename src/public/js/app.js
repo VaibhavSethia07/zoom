@@ -84,8 +84,17 @@ cameraBtn.addEventListener("click", () => {
   cameraOff = !cameraOff;
 });
 
-camerasSelect.addEventListener("input", () => {
-  getMedia(camerasSelect.value);
+camerasSelect.addEventListener("input", async () => {
+  await getMedia(camerasSelect.value);
+  if (peerConnection) {
+    const videoTrack = stream.getVideoTracks()[0];
+    console.log(peerConnection.getSenders());
+    const videoSender = peerConnection.getSenders().find((sender) => {
+      return sender.track.kind === "video";
+    });
+    console.log(videoSender);
+    videoSender.replaceTrack(videoTrack);
+  }
 });
 
 welcome.addEventListener("submit", async (event) => {
