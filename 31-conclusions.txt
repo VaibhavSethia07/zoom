@@ -1,0 +1,23 @@
+Data Channel
+
+1. A data channel is a channel where peer to peer user can send and receive any kind of data. Till now we have been receiving video/audio.
+
+2. We can transfer file, text chat, game update packets. Here there is no need of a server.
+
+3. Read mdn docs related to Data Channel
+Note: channel.onopen=function (event){
+
+} 
+
+is same as channel.addEventListener('open',()=>{
+
+})
+
+4. WebRTC cannot be used when we have lots of peer. The reason is in WebRTC the network will become like a complete graph
+where every computer is uploading and downloading audio/video from every other peer.
+
+5. Some companines use SFU(Selective Forwarding Unit). This kind of structure depends on a centralised server to which each
+computer uploads the stream and from which a computer can download all other streams. 
+
+6. But if we are using Data Channel then we don't have to think about the complete graph because here we are transferring
+text which is fast.
