@@ -1,0 +1,25 @@
+1. The problem is when the phone is not on the same WiFi as our computer, there is an error and peer's stream is not visible. 
+
+2. The reason this is happening because we need a STUN (Session Traversal Utilities for NAT) server. A STUN server allows
+computers to find out their public ip address. Everything used to work before because the 2 browsers were on the same WiFi
+so they could find each other.
+
+3. When we connect from phone using mobile data, the phone cannot find the laptop. This is why we need a STUN server. To
+fix
+this we can add a list of STUN servers when we create a RTCPeerConnection().
+
+Note: We will be using servers provided for free by Google. But if we want to make professional WebRTC service then we
+should run our own STUN server.
+{
+    iceServers: [
+      {
+        urls: [
+          "stun.l.google.com:19302",
+          "stun1.l.google.com:19302",
+          "stun2.l.google.com:19302",
+          "stun3.l.google.com:19302",
+          "stun4.l.google.com:19302",
+        ],
+      },
+    ],
+  }
